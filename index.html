@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>Hello, world!</title>
+  </head>
+  <body>
+              <!-- Just an image -->
+              <div  id="app">
+              <nav class="navbar navbar-light fixed-top">
+                    <div class="navbar-text ml-auto d-flex">
+                     <div class="ml-2" v-if="cart.length>0">
+                      <b>cart:</b> 
+                       <span class="badge badge-pill badge-success">{{cart.length}}</span>
+                     </div>
+                    </div>
+                  </nav>
+                  
+            <div class="container">
+                <div class="form-inline mr-auto mt-5">
+                    <label class="font-weight-bold mr-2" for="form">max</label>
+                     <input type="text" id="formMax" class="form-control w-25" v-model="maximum">
+                </div>
+
+               <input type="range" class="custom-range" min="0" max="200" v-model="maximum">
+
+                <div class="row d-flex mb-3 align-items-center" v-for="item in products">
+                <div v-if="item.price<=Number(maximum)"> 
+
+                 <div class="col-1 m-auto">
+                    <button class="btn btn-info" 
+                    v-on:click="cart.push(item)">+</button>
+                 </div>
+
+                 <div class="col-sm-4">
+                    <img class="img-fluid d-block" :src="item.image" :alt="item.name">
+                </div>
+
+                 <div class="col-4">
+                    <h3 class="text-info">{{ item.name }}</h3>
+                    <p class="mb-0">{{ item.description }}</p>
+                    <div class="h5 float-right">${{item.price}}</div>     
+                </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+        el: '#app',
+        data: {
+            maximum: 99,
+            products: null,
+            cart: []
+        },
+        mounted: function(){
+            fetch('https://hplussport.com/api/products/order/price')
+            .then(response => response.json())
+            .then(data => {
+                this.products = data;
+            })
+        }
+        });
+    </script>
+  </body>
+</html>
